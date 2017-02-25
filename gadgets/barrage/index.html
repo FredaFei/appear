@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>弹幕</title>
+	<style>
+		*{margin: 0; padding: 0;}
+		button:focus{
+			outline: none;
+		}
+		input{
+			border: 1px solid #ccc;
+		}
+		input:focus{
+			border: 1px solid transparent;
+		}
+		.wrapper{
+			width: 960px;
+			margin: auto;
+		}
+		.content{
+			height: 645px;
+			margin: 30px 0;
+			padding: 20px 0;
+			overflow: hidden;
+			position: relative;
+			background: url(bg.jpg) no-repeat #fff;
+			background-size: contain;
+		}
+		.content>p{
+			line-height: 1.5;
+			font-size: 20px;
+		}
+		.input-box input{
+			width: 300px;
+			line-height: 18px;
+			padding: 3px;
+		}
+		.control{
+			margin: 15px 0;
+			font-size: 0;
+		}
+		.control button{
+			padding: 4px 10px;
+			font-size: 14px;
+			color: #fff;
+			border: 1px solid #ddd;
+			border-radius: 3px;
+			background-color: #ccc;
+			transition: all .2s ease;
+			cursor: pointer;
+		}
+		button:hover,
+		button:active{
+			box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.19);
+		}
+		.control .emit{
+			margin-right: 10px;
+			background-color: #4CAF50;
+		}
+		@keyframes move{
+			from {right: 0;}
+			to {right: 100%;}
+		}
+	</style>
+</head>
+<body>
+<div class="wrapper">
+	<div class="content"></div>
+	<div class="input-box">
+		<input class="inputValue" type="text" placeholder="一起来发弹幕" maxlength="30" />
+	</div>
+	<div class="control">
+		<button class="emit">发送</button>
+		<button class="clear">清屏</button>
+	</div>
+</div>
+	
+	<script>
+		function getNode(node){
+			return document.getElementsByClassName(node)[0];
+		}
+		var content = getNode('content');
+		var inputValue = getNode('inputValue');
+		var emit = getNode('emit');
+		var clear = getNode('clear');
+
+		// 随机字体颜色
+		function randomColor(){
+			// 0-255之间的随机整数
+			var r = parseInt(Math.random()*255);
+			var g = parseInt(Math.random()*255);
+			var b = parseInt(Math.random()*255);
+			return 'rgb('+r+','+b+','+b+')';
+		}
+
+		function randomTop(){
+			return Math.random()*750 + 'px';
+		}
+		// 随机动画时长
+		function randomAnimation(){
+			return 'move' + ' ' + (parseInt(Math.random()*10+15)) + 's' + ' ' + 'infinite' + ' ' + 'ease';
+		}
+
+		function handle(){
+			var text = inputValue.value;
+			var p = document.createElement('p');
+			p.textContent = text;
+			p.style.color = randomColor();
+			p.style.position = 'absolute';
+			p.style.top = randomTop();
+			p.style.whiteSpace = 'nowrap';
+			p.style.animation = randomAnimation();
+
+			if (inputValue.value) {
+				inputValue.value = ' ';
+			}
+			content.appendChild(p);
+		}
+		//
+		emit.addEventListener('click', function(){
+			handle();
+		});
+
+		clear.addEventListener('click', function(){
+			content.innerHTML = '';
+		});
+		inputValue.addEventListener('keyup', function(e){
+			if (e.keyCode === 13) {
+        handle();
+      }
+		});
+
+	</script>
+</body>
+</html>

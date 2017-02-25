@@ -1,0 +1,219 @@
+*{margin: 0; padding: 0;}
+input:focus{
+  outline: none;
+}
+.content{
+  margin: 50px auto;
+  width: 630px;
+}
+.inputbox {
+  position: relative;
+  width: 208px;
+  margin: 0 211px;
+  overflow: hidden;
+  cursor: pointer;
+}
+.inputbox .date-ipt {
+  width: 170px;
+  height: 30px;
+  padding-left: 35px;
+  font-size: 16px;
+  border: 1px solid #333;
+  border-radius: 8px;
+  cursor: pointer;
+}
+.inputbox .fa-calendar {
+  position: absolute;
+  top: 7px;
+  left: 8px;
+  font-size: 18px;
+  z-index: 10;
+}
+.calendar{
+  width: 630px;
+  margin: 50px auto;
+  height: 400px;
+  box-shadow: 0px 15px 20px rgba(0, 0, 0, .25);
+  transform: translate3d(0,0,0);
+  transition: all .5s ease-out;
+  animation: show .5s ease-out;
+}
+@keyframes show{
+  from{
+    opacity: 0;
+    transform: translate3d(0,-100%,0);
+  }
+  to{
+    opacity: 1;
+    transform: translate3d(0,0,0);
+  }
+}
+.calendar:after{
+  content: '';
+  display: block;
+  clear: both;
+}
+.calendar .side{
+  float: left;
+  width: 35%;
+  height: 100%;
+  background-color: #009688;
+  box-shadow: -10px 0px 20px rgba(0, 0, 0, .25);
+  overflow: hidden;
+  z-index: 1;
+}
+.calendar .side>span{
+  display: block;
+  padding-left: 20px;
+  color: #fff;
+  transition: all .2s ease-out;
+  cursor: pointer;
+}
+.calendar .side .year{
+  margin-top: 15px;
+  margin-left: 5px;
+  font-size: 20px;
+  opacity: .8;
+}
+.calendar .side .week{
+  margin-top: 10px;
+  font-size: 30px;
+}
+.calendar .side .day{
+  margin-top: 10px;
+  font-size: 40px;
+}
+.calendar .main{
+  float: left;
+  width: 65%;
+  height: 100%;
+  box-shadow: 10px 2px 20px rgba(0, 0, 0, .25);
+}
+.calendar .main>.controle{
+  margin: auto;
+  width: 90%;
+  height: 40px;
+  position: relative;
+  font-size: 0;
+}
+.calendar .main>.controle .head-date{
+  display: inline-block;
+  width: 33.33%;
+  line-height: 40px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #000;
+  text-align: center;
+  cursor: pointer;
+}
+.calendar .main>.controle .fa{
+  display: inline-block;
+  line-height: 40px;
+  width: 33.33%;
+  font-size: 14px;
+  color: #737373;
+  transition: all .3s linear;
+  cursor: pointer;
+}
+.calendar .main>.controle .fa-chevron-left{
+  text-align: left;
+}
+.calendar .main>.controle .fa-chevron-right{
+  text-align: right;
+}
+.calendar .main .panel{
+  margin-top: 10px;
+  width: 100%;
+  text-align: center;
+}
+.calendar .main table.slide-left{
+  animation: slideLeft .25s ease-out;
+}
+.calendar .main table.slide-right{
+  animation: slideRight .25s ease-out;
+}
+@keyframes slideLeft{
+  0%{
+    opacity: 0;
+    transform: translate3d(-100%,0,0);
+  }
+  25%{
+    opacity: 0;
+    transform: translate3d(-20%,0,0);
+  }
+  75%{
+    opacity: .1;
+    transform: translate3d(-10%,0,0);
+  }
+  100%{
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes slideRight{
+  0%{
+    opacity: 0;
+    transform: translate3d(100%,0,0);
+  }
+  25%{
+    opacity: 0;
+    transform: translate3d(20%,0,0);
+  }
+  75%{
+    opacity: .1;
+    transform: translate3d(10%,0,0);
+  }
+  100%{
+    opacity: 1;
+    transform: none;
+  }
+}
+.calendar .main .panel thead{
+  color: #9b9b9b;
+}
+.calendar .main .panel thead th{
+  line-height: 2;
+}
+.calendar .main .panel tbody a{
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 16px;
+  color: #000;
+  font-weight: 700;
+  text-align: center;
+  border-radius: 50%;
+  transition: all .2s ease-out;
+}
+.calendar .main .panel tbody .prev-month,
+.calendar .main .panel tbody .next-month{
+  color: #eee;
+}
+.calendar .main .panel tbody .cur-date{
+  background: #009688;
+  color: #fff;
+}
+.calendar .main .panel tbody .cur-month{
+  cursor: pointer;
+}
+.calendar .main .panel tbody .cur-month:hover{
+  background: #009688;
+  color: #fff;
+}
+.calendar .main .footer{
+  position: absolute;
+  right: 10px;
+  bottom: 18px;
+  text-align: right;
+}
+.calendar .main .footer>span{
+  padding: 10px;
+  color: #009688;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+}
+.calendar .main .footer>span:hover{
+  color: #000;
+}

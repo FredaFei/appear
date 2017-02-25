@@ -1,0 +1,134 @@
+@charset "UTF-8";
+.wrapper{
+	width: 100%;
+	margin: 0 auto;
+}
+h1{
+	color: #eef3f0;
+	font-size: 4rem;
+	text-shadow: 1px 2px #22c3aa,2px 4px #aee2d9;
+	white-space: nowrap;
+}
+h2{
+	color: #eef3f0;
+	font-size: 2rem;
+}
+#projects .wrapper{
+	height: 100vh;
+	text-align: center;
+	min-height: 400px;
+	background-color: #22c3aa;
+}
+.nav{
+	margin-right: 2rem;
+	text-align: right;
+	height: 15vh;
+	line-height: 15vh;
+}
+.nav a{
+	display: inline-block;
+	vertical-align: middle;
+	width: 2rem;
+	height: 2rem;
+	line-height: 2rem;
+	font-size: .8rem;
+	border: 1px solid #fff;
+	border-radius: 50%;
+	text-align: center;
+}
+#projects .topbtn{
+	position: fixed;
+	left: 2rem;
+	display: none;
+}
+.visible{
+	display: block !important;
+}
+#projects .hightlight{
+	background-color: #22c3aa;
+}
+header .logo{
+	height: 15vh;
+	line-height: 15vh;
+	text-align: left;
+	font-size: 0.8rem;
+	margin-left: 2rem;
+}
+header .title{
+	height: 70vh;
+	padding-top: 10vh;
+	text-align: center;
+	min-height: 300px;
+
+}
+header .title .introduction{
+	margin: 2rem 2rem 0;
+	color: #008a75;
+	font-weight: bold;
+	font-size: 1rem;
+}
+.figure{
+	height: 70vh;
+	padding-top: 10vh;
+    min-height: 300px;
+}
+.character{
+	margin: 4vh;
+	font-size: .9rem;
+	line-height: 1.5;
+	color: #eef3f0;
+	overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-box-orient: vertical;
+    display: -webkit-box;
+    -webkit-line-clamp: 4; /*显示的文本行数*/
+    -webkit-box-flex: 4;
+    text-align: justify-all;
+    word-break: break-all;
+
+}
+.moreBtn{
+	display: inline-block;
+	vertical-align: middle;
+	width: 10rem;
+	padding: .4rem 1rem;
+	text-align: center;
+	color: #22c3aa;
+	font-size: 1.2rem;
+	border-radius: 1.5rem;
+	background-color: #fff;
+	border: 1px solid transparent;
+	transition: all .3s ease-in-out;
+}
+.moreBtn:hover{
+	color: #fff;
+	background-color: transparent;
+	border: 1px solid #fff;
+}
+#projects .luffy{
+	background-color: #FE4C40;
+}
+#projects .zoro{
+	background-color: #007850;
+}
+#projects .nami{
+	background-color: #9999FF;
+}
+#projects .usopp{
+	background-color: #918280;
+}
+#projects .sanji{
+	background-color: #ee7836;
+}
+#projects .chopper{
+	background-color: #7bbfea;
+}
+#projects .robin{
+	background-color: #6f599c;
+}
+#projects .franky{
+	background-color: #ADA0A5;
+}
+#projects .brook{
+	background-color: #4C556E;
+}

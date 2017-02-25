@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>日历组件</title>
+	<link rel="stylesheet" type="text/css" href="css/font-awesome.min.css">
+	<link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+<div class="content">
+	<!-- 输入框 -->
+	<div class="inputbox">
+		<i class="fa fa-calendar"></i>
+		<input class="date-ipt" type="text" placeholder="请选择日期" />
+	</div>
+	<!-- 日历列表 -->
+</div>
+
+
+	<script src="js/jquery-3.1.0.min.js"></script>
+	<script>
+		function Calendar($target) {
+			this.init($target);
+			this.render();
+			this.setDate();
+			this.bind();
+		}
+		Calendar.prototype = {
+			// 初始化当前时间
+			init: function($target){
+				this.$target = $target;
+				if (this.isValidDate($target.attr('data-init'))) {
+					this.date = new Date($target.attr('data-init'));
+					this.switchDate = new Date($target.attr('data-init'));
+				}else{
+					this.date = new Date();
+					this.switchDate = new Date();
+				}
+
+			},
+			render: function(){
+				var tpl = '';
+				tpl += '<div class="calendar" style="display:none">'
+						+ '  <div class="side">'
+						+ '    <span class="year"></span>'
+						+ '    <span class="week"></span>'
+						+ '		 <span class="day"></span>'
+						+ '  </div>'
+						+ '  <div class="main">'
+						+ '		 <div class="controle">'
+						+ '			<i class="fa fa-chevron-left prev" aria-hidden="true"></i>'
+						+ '			<span class="head-date"></span>'
+						+ '			<i class="fa fa-chevron-right next" aria-hidden="true"></i>'
+						+ '		 </div>'
+						+ '    <table class="panel">'
+						+ '			 <thead><tr><th>日</th><th>一</th><th>二</th><th>三</th><th>四</th><th>五</th><th>六</th></tr></thead>'
+						+ '			 <tbody></tbody>'
+						+ '		 </table>'
+						+ '  </div>'
+						+ '</div>'
+				this.$datepicker = $(tpl); // calendar
+				this.$datepicker.insertAfter(this.$target.parent());
+			},
+			setDate: function(){
+				this.$datepicker.find('tbody').html('');
+				var firstDay = this.getFirstDay(this.switchDate);
+				var lastDay = this.getLastDay(this.switchDate);
+				var dateArr = [];
+
+				// 拿到当前月份第一天周几，推算出本周前面有多少天数，
+				for (var i = firstDay.getDay(); i > 0; i--) {
+					var d = new Date(firstDay.getTime() - i*24*60*60*1000);
+					dateArr.push({type: 'prev', date: d});
+				}
+				// 拿到当前月份的总天数
+				for (var j = 0; j < lastDay.getDate() - firstDay.getDate() + 1; j++) {
+					var d = new Date(firstDay.getTime() + j*24*60*60*1000);
+					dateArr.push( {type: 'cur', date: d} );
+				}
+
+				// 拿到当前月份最后一天周几，推算出本周剩余天数
+				for(var k = 1; k < 7 - lastDay.getDay(); k++){
+					var d = new Date(lastDay.getTime() + k*24*60*60*1000);
+					dateArr.push( {type: 'next', date: d} )
+				}
+				// head-date
+				this.$datepicker.find('.head-date').text(this.switchDate.getFullYear() + '年' +(this.switchDate.getMonth() + 1) + '月');
+
+				this.sideChange();
+				// 处理月份日期样式
+				var tpl = '';
+				for(var i=0;i<dateArr.length;i++){
+					if (i%7 === 0) {
+						tpl = '<tr>' + tpl;
+					}
+					tpl += '<td><a class="';
+					if (dateArr[i].type === 'prev') {
+						tpl += 'prev-month';
+					}else if(dateArr[i].type === 'cur'){
+						tpl += 'cur-month';
+					}else{
+						tpl += 'next-month';
+					}
+					// 当前日期样式
+					if (this.getYYMMDD(this.date) === this.getYYMMDD(dateArr[i].date)) {
+						tpl += ' cur-date';
+					}
+					tpl += '"';
+					tpl += ' data-date="' + this.getYYMMDD(dateArr[i].date) + '">'; // 2017/1/19
+					tpl += this.toFixed( dateArr[i].date.getDate()) + '</a></td>';
+					if (i%7===6) {
+						tpl = tpl + '</tr>'
+					}
+				}
+				this.$datepicker.find('tbody').html(tpl);
+			},
+			sideChange: function(){
+				var weeks = ['日', '一', '二', '三', '四', '五', '六'];
+				this.$datepicker.find('.year').text(this.switchDate.getFullYear());
+				this.$datepicker.find('.week').text('星期' + weeks[this.switchDate.getDay()]);
+				this.$datepicker.find('.day').text((this.switchDate.getMonth() + 1) + '月' + (this.switchDate.getDate()) + '日');
+			},
+			addActive: function(){
+				if (!this.$datepicker.find('td>a').hasClass('cur-date')) {
+					this.$datepicker.find('.cur-month').eq(0).addClass('cur-date');
+				}
+			},
+			bind: function(){
+				var self = this;
+				this.$datepicker.find('.prev').on('click', function(){
+					$('table').addClass('slide-left').removeClass('slide-right')
+					self.switchDate = self.getPreMonth(self.switchDate);
+					self.setDate();
+					self.addActive();
+					setTimeout(function(){
+						if ($('table').hasClass('slide-left')) {
+							$('table').removeClass('slide-left');
+						}
+					},300);
+				});
+
+				this.$datepicker.find('.next').on('click', function(){
+					$('table').addClass('slide-right').removeClass('slide-left')
+					self.switchDate = self.getNextMonth(self.switchDate);
+
+					self.setDate();
+					self.addActive();
+
+					setTimeout(function(){
+						if ($('table').hasClass('slide-right')) {
+							$('table').removeClass('slide-right');
+						}
+					},300);
+				});
+
+				// 事件代理
+				this.$datepicker.on('click','.cur-month', function(e){
+					$('table').find('.cur-date').removeClass('cur-date');
+					$(this).addClass('cur-date');
+					// 修改input输入框的值
+          self.$target.val($(this).attr('data-date'));
+          // 修改左边框的值
+          self.switchDate = new Date($(this).attr('data-date'));
+          self.sideChange();
+        });
+         
+        this.$target.on('click', function(e){
+          e.stopPropagation();
+          self.$datepicker.toggle();
+        });
+        // 设置点击页面其他部分隐藏 datepicker
+        this.$datepicker.on('click', function(e){
+          e.stopPropagation();
+        });
+        $(window).on('click', function(e){
+          self.$datepicker.hide(100);
+        })
+        
+			},
+
+			// 获取 date 所在月份的第一天的时间对象
+			getFirstDay: function(date){
+				console.log('date: ' + date);
+				var year = date.getFullYear();
+				var month = date.getMonth();
+				var newDate = new Date(year,month,1)
+				return newDate;
+			},
+			// 获取 date 所在月份的最后一天的时间对象
+			getLastDay: function(date){
+				var year = date.getFullYear();
+				var month = date.getMonth();
+				month++;
+				if (month > 11) {
+					month = 0;
+					year++;
+				}
+				var newDate = new Date(year,month,1);
+				return new Date(newDate.getTime() - 1000*60*60*24);
+			},
+
+			// 获取date 上月1号时间对象
+			getPreMonth: function(date){
+				var year = date.getFullYear();
+				var month = date.getMonth();
+				month--;
+				if (month < 0) {
+					month = 11;
+					year--;
+				}
+				return new Date(year,month,1);
+			},
+			// 获取date 下月1号时间对象
+			getNextMonth: function(date){
+				var year = date.getFullYear();
+				var month = date.getMonth();
+				month++;
+				if (month > 11) {
+					month = 0;
+					year++;
+				}
+				return new Date(year,month,1);
+			},
+			getYYMMDD: function(date){
+        var yy = date.getFullYear();
+        var mm = date.getMonth()+1;
+        return yy + "/" + this.toFixed(mm) + "/" + this.toFixed(date.getDate());
+      },
+
+      //eg:  1 -> "01"  11 -> "11"
+      toFixed: function(n){
+        return (n+'').length === 1 ? ('0'+ n+'') : (n+'');
+      },
+
+			// new Date('2016/05/31').toString() 
+			// --> Tue May 31 2016 00:00:00 GMT+0800 (中国标准时间)
+			isValidDate: function(dataStr){
+				return new Date(dataStr).toString() !== 'Invalid Date'
+			}
+		}
+		// jQuery插件
+		$.fn.calendar = function(){
+			this.each(function(){
+				new Calendar($(this));
+			});
+		};
+		// 调用
+		$('.date-ipt').calendar();
+
+	</script>
+</body>
+</html>

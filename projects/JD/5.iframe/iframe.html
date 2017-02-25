@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<meta name="robots" content="noindex">
+<html>
+<head>
+  <script src="http://7xuf0e.com1.z0.glb.clouddn.com/jquery%2Fjquery.min.js"></script>
+<meta name="description" content="news-service" />
+  <meta charset="utf-8">
+  <title>JS Bin</title>
+  <link rel="stylesheet" href="http://at.alicdn.com/t/font_1468465602_4488037.css">
+<style id="jsbin-css">
+*{margin: 0;padding:0;}
+*{box-sizing: border-box;}
+ body{
+  background: white;
+  color: #666;
+  font:12px/1.5 Arial,Verdana,"\5b8b\4f53",serif;
+  -webkit-font-smoothing: antialiased;
+} 
+ul,li{
+  list-style: none;
+}
+.clearfix:after{
+  content: '';
+  display: block;
+  clear: both;
+}
+a{
+  text-decoration: none;
+  color: inherit;
+}
+.list-slides-news-service{
+  margin: 0 auto;
+  width: 1210px;
+}
+.list-slides-news-service aside{
+  float: left;
+  margin-left: 10px;
+  margin-top: 15px;
+}
+.list-slides-news-service .aside-wrapper{
+  border: 1px solid #ddd;
+}
+.list-slides-news-service aside .news{
+  width: 248px;
+}
+.list-slides-news-service aside .news>.newTilte{
+  height: 32px;
+  line-height: 32px;
+  padding: 0 15px;
+  border-bottom: 1px  dotted #E8E8E7;
+}
+.list-slides-news-service aside .news>.newTilte>h4{
+  font-family: "microsoft yahei";
+  font-weight: 400;
+  font-size: 16px;
+  float: left;
+}
+.list-slides-news-service aside .news>.newTilte>.more{
+  float: right;
+}
+.list-slides-news-service aside .news>.newTilte>.more>a>i{
+  font-size: 12px;
+  padding-left: 2px;
+}
+.list-slides-news-service aside .news>.newTilte>.more>a:hover{
+  color: #C81623;
+}
+.list-slides-news-service aside .news>.notice{
+  padding: 5px 15px;
+}
+.list-slides-news-service aside .news>.notice>li{
+  height: 24px;
+  line-height: 24px;
+}
+.list-slides-news-service aside .news>.notice>.hot{
+  color: #C81623;
+  font-weight: bold;
+}
+.list-slides-news-service aside .service{
+  position: relative;
+  width: 248px;
+  overflow: hidden;
+}
+.list-slides-news-service aside .service>.tabs{
+  width: 260px;
+  height: 209px;
+  overflow: hidden;
+  position: relative;
+} 
+.list-slides-news-service aside .service>.tabs>.tab-button{
+  width: 63px;
+  float: left;
+  border-right: 1px solid #E8E8E7;
+  border-top: 1px solid #E8E8E7;
+}
+.list-slides-news-service aside .service>.tabs>.tab-button i{
+  height: 25px;
+  line-height: 25px;
+  width: 25px;
+  color: #C81623;
+  font-size: 25px;
+  padding: 15px 19px 4px 19px;
+  display: inline-block;
+}
+.list-slides-news-service aside .service>.tabs>.tab-button p{
+  padding: 5px 0 3px 0;
+  text-align: center;
+  color: #666;
+}
+.list-slides-news-service aside section img{
+  padding-top: 5px;
+  vertical-align: top;
+}
+/*iframe-recharge CSS样式*/
+.iframe-recharge{
+	position: absolute;
+	width: 260px;
+	height: 210px;
+	top: 210px;
+	z-index: 100;
+	border-top: 1px solid #E8E8E7;
+}
+.iframe-recharge>li{
+	float: left;
+	vertical-align: top;
+}
+.iframe-recharge>.closeframe{
+	width: 12px;
+	height: 12px;
+	position: absolute;
+	top: 28px;
+	right: 8px;
+	cursor: pointer;
+}
+.iframe-recharge>li .iframe-button{
+	display: block;
+	width: 63px;
+	height: 28px;
+	line-height: 28px;
+	text-align: center;
+	color: #666;
+	background-color: #fff;
+	border-bottom: 1px solid #e8e8e7;
+	border-right: 1px solid #e8e8e7;
+	border-top: 2px solid transparent;
+}
+.iframe-recharge>li .iframe-button.active{
+	border-top: 2px solid #c81623;
+}
+.iframe-recharge>li .iframe-button.active:after{
+	content: '';
+	display: block;
+	position: relative;
+	height: 1px;
+	background: white;
+	left: 1px;
+	right: 1px;
+	top: 1px;
+	box-sizing: border-box;	
+}
+.iframe-recharge>li .iframe-content{
+	position: absolute;
+	top: 28px;
+	width: 248px;
+	left: 0px;
+	background: #fff;
+	display: none;
+	background-color: #000;
+}
+.iframe-recharge>li .iframe-content.active{
+	display: block;
+}
+</style>
+</head>
+<body>
+<div class="list-slides-news-service">
+ <aside>
+ 	<div class="aside-wrapper">
+	   <section class="news clearfix">
+	     <div class="newTilte clearfix">
+	       <h4>京东快报</h4>
+	       <div class="more">
+	         <a href="#">更多<i class="jd-iconfont i-right"></i></a>
+	      </div>
+	    </div>
+	     <ul class="notice">
+	       <li class="hot"><a href="#"><strong>[618]</strong> 预定享超值 低价购品质</a></li>
+	       <li><a href="#"><strong>[公告]</strong> 华东浦东大件运营中心正式运营</a></li>
+	       <li><a href="#"><strong>[特惠]</strong> 好奇，炫裤热销惊夏聚省</a></li>
+	       <li><a href="#"><strong>[公告]</strong> 京东618品质狂欢节火爆来袭</a></li>
+	       <li><a href="#"><strong>[特惠]</strong> 美的冰箱超级优惠 超值好礼</a></li>
+	     </ul>
+	   </section>
+	   <section class="service">
+	     <ul class="tabs clearfix">
+	       <li class="tab-button hasframe" data-index=0><a href=""><i class="jd-iconfont i-huafeichongzhi"></i><p>话费</p></a></li>
+	       <li class="tab-button hasframe" data-index=1><a href=""><i class="jd-iconfont i-iconfontfeiji0"></i><p>机票</p></a></li>
+	       <li class="tab-button hasframe" data-index=2><a href=""><i class="jd-iconfont i-dianyingpiaoiocn"></i><p>电影票</p></a></li>
+	       <li class="tab-button hasframe" data-index=3><a href=""><i class="jd-iconfont i-iconyouxi"></i><p>游戏</p></a></li>
+	       <li class="tab-button"><a href=""><i class="jd-iconfont i-caixin"></i><p>彩票</p></a></li>
+	       <li class="tab-button"><a href=""><i class="jd-iconfont i-6"></i><p>团购</p></a></li>
+	       <li class="tab-button"><a href=""><i class="jd-iconfont i-jiudian"></i><p>酒店</p></a></li>
+	       <li class="tab-button"><a href=""><i class="jd-iconfont i-train"></i><p>火车票</p></a></li>
+	       <li class="tab-button"><a href=""><i class="jd-iconfont i-zhongchou-copy-copy"></i><p>众筹</p></a></li>
+	       <li class="tab-button"><a href=""><i class="jd-iconfont i-licai"></i><p>理财</p></a></li>
+	       <li class="tab-button"><a href=""><i class="jd-iconfont i-parentcar"></i><p>礼品卡</p></a></li>
+	       <li class="tab-button"><a href=""><i class="jd-iconfont i-baitiao"></i><p>白条</p></a></li>
+	     </ul>
+	     <ul class="iframe-recharge clearfix">
+	     	<li>
+	     		<a href="" class="iframe-button"><span>话费</span></a>
+	 			<div class="iframe-content">
+	 				<iframe frameborder="0" scrolling="no" width="250" height="185" src="http://chongzhi.jd.com/jd-index-ifame.htm"></iframe>
+	 			</div>	
+	     	</li>
+	     	<li>
+	     		<a href="" class="iframe-button"><span>机票</span></a>
+	 			<div class="iframe-content">
+	 				<iframe frameborder="0" scrolling="no" width="250" height="185" src="http://jipiao.jd.com/htm/iframeTrip.html"></iframe>
+	 			</div>
+	     	</li>
+	     	<li>
+	     		<a href="" class="iframe-button"><span>电影票</span></a>
+	 			<div class="iframe-content">
+	 				<iframe frameborder="0" scrolling="no" width="250" height="185" src="http://movie.jd.com/jdmovie.html"></iframe>
+	 			</div>
+	     	</li>
+	     	<li>
+	     		<a href="" class="iframe-button"><span>游戏</span></a>
+	     		<div class="iframe-content">
+	     			<iframe frameborder="0" scrolling="no" width="250" height="185" src="http://card.jd.com/html/card-jdIndex2015.html"></iframe>
+	     		</div>
+	     	</li>
+	     	<div class="closeframe" style="z-index: 10">x</div>
+	     </ul>
+	   </section>
+	   
+   </div>
+   <section>
+     <a href="#"><img src="http://img30.360buyimg.com/da/jfs/t2893/306/930256312/26242/4d571b6a/572c3596N04810685.jpg" alt=""></a>
+   </section>
+ </aside>
+</div>
+
+<script>
+	$('.hasframe').on('mouseenter',function(e){
+			popout(e);
+		})  
+		$('.closeframe').on('click',function(e){
+			$('.hasframe').off('mouseenter');
+			$('.iframe-recharge').stop(true,true).animate({top: '210px'},500,function(){
+			 	setTimeout(function(){
+					$('.hasframe').on('mouseenter',function(e){
+						popout(e)
+					})  
+				},0);
+			})
+		})
+		$('.iframe-button').on('mouseenter',function(e){
+			$('.iframe-content.active,.iframe-button.active').removeClass('active')
+			$(this).addClass('active')			
+		    $(this).next('.iframe-content').addClass('active')
+		    console.log(this)
+		})
+		function popout(e){
+			var $current = $(e.currentTarget)
+			var index = $current.attr('data-index')
+			var indexNumber = +index  
+			$('.iframe-content.active,.iframe-button.active').removeClass('active')
+			$('.iframe-button').eq(indexNumber).addClass('active')
+			$('.iframe-content').eq(indexNumber).addClass('active')
+			$('.iframe-recharge').animate({top: '0px'},500,function(){})
+		}
+</script>
+
+</body>
+</html>

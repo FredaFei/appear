@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>散列海报画廊</title>
+  <link rel="stylesheet" href="font-awesome-4.6.3/css/font-awesome.min.css">
+  <style>
+  *{margin: 0; padding: 0;}
+  body{
+    background: #fff;
+    color: #555;
+    font-size: 14px;
+    font-family: 'Avenir Next', 'Lantinghei SC';
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrapper{
+    position: absolute;
+    top: 50%;
+    margin-top: -300px;
+    width: 100%;
+    height: 600px;
+    background: #ddd;
+    overflow: hidden;
+    -webkit-perspective: 800px;
+  }
+  .btn-type{
+    position: fixed;
+    top: 0;
+    left: 0;
+    margin: 10px 0;
+    width: 100%;
+    z-index: 999;
+    text-align: center;
+  }
+  .btn-type button{
+    padding: 0 5px;
+    line-height: 1.8;
+    font-size: 13px;
+    color: #fff;
+    background: #3385ff;
+    box-shadow: 0 0 2px #aaa;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-type button:hover{
+    background: #317ef3;
+  }
+  .photo{
+    width: 260px;
+    height: 320px;
+    position: absolute;
+    z-index: 1;
+    box-shadow: 0 0 1px rgba(0,0,0,.01);
+    transition: all .6s ease;
+  }
+  .photo .side{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: 20px;
+    background: #eee;
+    box-sizing: border-box;
+  }
+  .photo .side-front .image{
+    width: 100%;
+    height: 250px;
+    line-height: 250px;
+    overflow: hidden;
+  }
+  .photo .side-front .image img{
+    width: 100%;
+  }
+  .photo .side-front .caption{
+    text-align: center;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .photo .side-back .desc{
+    color: #666;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  /*当前选中海报样式*/
+  .photo-center{
+    width: 260px;
+    height: 320px;
+    top: 50%;
+    left: 50%;
+    margin: -160px 0 0 -130px;
+    z-index: 999;
+  }
+  /*负责翻转*/
+  .photo-wrap{
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-transform-style: preserve-3d;
+    transition: all .6s ease-in-out;
+    transform-origin: 0% 50%;
+  }
+  .photo-wrap .side-front{
+    transform: rotateY(0deg);
+  }
+  .photo-wrap .side-back{
+    transform: rotateY(180deg);
+  }
+  .photo-wrap .side{
+    -webkit-backface-visibility: hidden;
+  }
+  .photo-front .photo-wrap{
+    transform: translate(0px,0px) rotateY(0deg);
+  }
+  .photo-back .photo-wrap{
+    transform: translate(260px,0px) rotateY(180deg);
+  }
+  /*控制按钮样式*/
+  .nav{
+    width: 80%;
+    height: 30px;
+    line-height: 30px;
+    position: absolute;
+    left: 10%;
+    bottom: 20px;
+    z-index: 999;
+    text-align: center;
+  }
+  .nav .icon{
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    border-radius: 50%;
+    background: #aaa;
+    cursor: pointer;
+    transform: scale(.5);
+    transition: all .6s ease-in-out;
+  }
+  .nav .icon:after{
+    content: "\f01e";
+    font-family: FontAwesome;
+    font-style: normal;
+    font-weight: normal;
+    font-size: 80%;
+    text-decoration: inherit;
+    color:#fff;
+    text-align: center;
+    opacity:0;
+  }
+  /*选中按钮样式*/
+  .nav .icon-current{
+    transform: scale(1);
+  }
+  .nav .icon-current:after{
+    opacity: 1;
+  }
+  /*背面按钮样式*/
+  .nav .icon-back{
+    transform: rotateY(-180deg);
+    background: #555;
+  }
+  /*优化样式*/
+  .photo{
+    left: 50%;
+    top: 50%;
+    margin: -160px 0 0 -130px;
+  }
+  </style>
+</head>
+<body>
+  <div class="btn-type">
+    <button class="random">散列画廊</button>
+    <button class="circle">环形画廊</button>
+  </div>
+  <div class="wrapper" id="wrap">
+    <!-- photo负责平移和旋转 -->
+    <div class="photo photo-front" id="photo-{{index}}" onclick="turnPhoto(this)">
+      <!-- photo-wrap负责翻转 -->
+      <div class="photo-wrap">
+        <div class="side side-front">
+          <div class="image"><img src="images/{{img}}" alt=""></div>
+          <div class="caption">{{caption}}</div>
+        </div>
+        <div class="side side-back">
+          <div class="desc">{{desc}}</div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+  
+  <script src="data.js"></script>
+  <script>
+    // 2.修改模版
+    // 3.通用函数
+    function g(selector){
+      return selector.substr(0,1) === '.' ? document.getElementsByClassName(selector.substr(1)):document.getElementById(selector.substr(1));
+    }
+    // 5.随机生成一个值支持取值范围
+    function random(range) {
+      var max = Math.max(range[0],range[1]);
+      var min = Math.min(range[0],range[1]);
+      var diff = max - min; // [1,6]
+      var number = Math.ceil((Math.random() * diff + min));
+      return number;
+    }
+    // 4.输出所以海报
+    var data = mockData;
+    function addPhoto(){
+      var template = g('#wrap').innerHTML;
+      var html = [];
+      var nav = [];
+      for(var s in data){
+        var _html = template
+                    .replace('{{index}}',s)
+                    .replace('{{img}}',data[s].img)
+                    .replace('{{caption}}',data[s].caption)
+                    .replace('{{desc}}',data[s].desc)
+        html.push(_html);
+        nav.push('<span id="nav-' + s +'" class="icon" onclick="turnPhoto(g(\'#photo-' + s +'\'))"></span>');
+      }
+      html.push('<div class="nav">' + nav.join('') + '</div>');   
+      g('#wrap').innerHTML = html.join('');
+      resort(random([0,data.length]));
+    }
+    addPhoto();
+
+    // 6.计算左右分区的范围
+    function range(){
+      var scope = {left: {x: [], y: []}, right: {x: [], y: []}};
+      var wrap = {
+        w: g('#wrap').clientWidth ,
+        h: g('#wrap').clientHeight
+      }
+      var photo = {
+        w: g('.photo')[0].clientWidth ,
+        h: g('.photo')[0].clientHeight
+      }
+      scope.wrap = wrap;
+      scope.photo = photo;
+
+      scope.left.x = [0 - photo.w/2, wrap.w / 2 - photo.w/2]; // 最小最大区间
+      scope.left.y = [0 - photo.h/2, wrap.h - photo.h/2];
+      scope.right.x = [wrap.w / 2, wrap.w - photo.w/2];
+      scope.right.y = scope.left.y;
+      return scope;
+    }
+
+    // 5. 排序海报
+    function resort(n) {
+      var _photo = g('.photo');
+      var photos = [];
+      for(var s = 0;s < _photo.length; s++){
+        _photo[s].className = _photo[s].className.replace(/\s*photo-center\s*/, ' ');
+        _photo[s].style.transform = 'scale(1.2)';
+        photos.push(_photo[s]);
+      }
+      var photoCenter = g('#photo-' + n);
+      photoCenter.className += ' photo-center';
+      photos.splice(n, 1); // 去除中间图片的对象
+
+      // 翻转按钮控制
+      var navs = g('.icon');
+      for(var i = 0; i < navs.length; i++){
+        navs[i].className = navs[i].className.replace(/\s*icon-current\s*/, ' ');
+        navs[i].className = navs[i].className.replace(/\s*icon-back\s*/, ' ');
+      }
+      g('#nav-' + n).className += ' icon-current ';
+
+      var ranges = range();
+      // 环形图片路径，距离取中心图片中点为圆心
+      var radius = ranges.photo.w > ranges.photo.h ? (ranges.photo.w + 100) : (ranges.photo.h + 100);
+      var centerPosition = {
+        left: ranges.wrap.w/2,
+        top: ranges.wrap.h/2
+      }
+      var randomAngle;
+      var sinY,cosX;
+      for (var r = 0; r < photos.length; r++) {
+        var photo = photos[r];
+        randomAngle = random([0,360]);
+        cosX = Math.cos(randomAngle * Math.PI/180) * radius;
+        sinY = Math.sin(randomAngle * Math.PI/180) * radius;
+        // console.log(photos[r].id + ':' + cosX + ' ' + sinY + ' ' + randomAngle);
+        // left为中心点位置加相对圆心的X轴偏移量，还要再减去一半自身的宽度，这样视觉上两边就对等了，top原理同left
+        photo.style.left = (centerPosition.left + cosX ) + 'px';
+        photo.style.top = (centerPosition.top + sinY) + 'px';
+        // 旋转角度
+        photo.style.transform = 'rotate(' + (randomAngle + 90) + 'deg)';
+      }
+    }
+    // 1.反面控制
+    function turnPhoto(el){
+      var cls = el.className;
+      var n = el.id.split('-')[1];
+
+      if(!/photo-center/.test(cls)){
+        g('#photo-' + n).style.left = '';
+        g('#photo-' + n).style.top = '';
+        g('#photo-' + n).style.transform = 'rotate(0deg)';
+        return resort(n);
+      }
+      if (/photo-front/.test(cls)) {
+        cls = cls.replace(/photo-front/, 'photo-back')
+        g('#nav-' + n).className += ' icon-back';
+      }else{
+        cls = cls.replace(/photo-back/, 'photo-front')
+        g('#nav-' + n).className = g('#nav-' + n).className.replace(/\s*icon-back\s*/, ' ');
+      }
+      return el.className = cls;
+    }
+
+  
+  </script>
+</body>
+</html>
